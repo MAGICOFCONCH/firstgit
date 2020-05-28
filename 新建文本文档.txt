@@ -1,0 +1,13 @@
+@RequestMapping("changeCart")
+    public String changeCart(@PathParam("id") String id, @PathParam("count") String count, HttpServletRequest request) throws FindProductByIdException {
+        HttpSession session = request.getSession();
+        Product product = productService.findProductById(id);
+        Map<Product, Integer> cart = (Map<Product, Integer>) session.getAttribute("cart");
+        if (count.equals("0")) {
+			cart.remove(product);
+        } else {
+            cart.put(product, Integer.parseInt(count));
+        }
+        session.setAttribute("cart", cart);
+        return "forward:/client/cart.jsp";
+    }
